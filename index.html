@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Todos los IP Addresses</title>
+    <title>Todos los codigos</title>
 </head>
 <body>
-    <h1>Todos los IP Addresses</h1>
+    <h1>códigos de robux</h1>
     <div id="ip-addresses"></div>
 
     <script>
@@ -36,7 +36,7 @@
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     ipAddresses = JSON.parse(xhr.responseText).ipAddresses;
-                    document.getElementById('ip-addresses').innerText = 'IP Addresses registrados: ' + ipAddresses.join(', ');
+                    document.getElementById('ip-addresses').innerText = 'Qué código te toco,dime cual, lo verifico y listop: ' + ipAddresses.join(', ');
                 }
             };
             xhr.onerror = function() {
