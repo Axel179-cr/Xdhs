@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todos los IP Addresses</title>
+</head>
+<body>
+    <h1>Todos los IP Addresses</h1>
+    <div id="ip-addresses"></div>
+
+    <script>
+        // Creamos un array para almacenar los IP addresses
+        var ipAddresses = [];
+
+        // Función para obtener la dirección IP del usuario
+        function obtenerIP() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://api.ipify.org/?format=json', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var respuesta = JSON.parse(xhr.responseText);
+                    ipAddresses.push(respuesta.ip);
+                    document.getElementById('ip-addresses').innerText = 'IP Addresses registrados: ' + ipAddresses.join(', ');
+                }
+            };
+            xhr.onerror = function() {
+                document.getElementById('ip-addresses').innerText = 'No se pudo obtener tu IP address';
+            };
+            xhr.send();
+        }
+
+        // Función para actualizar la lista de IP addresses
+        function actualizarListaIP() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/ip-addresses', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    ipAddresses = JSON.parse(xhr.responseText).ipAddresses;
+                    document.getElementById('ip-addresses').innerText = 'IP Addresses registrados: ' + ipAddresses.join(', ');
+                }
+            };
+            xhr.onerror = function() {
+                document.getElementById('ip-addresses').innerText = 'No se pudo actualizar la lista de IP addresses';
+            };
+            xhr.send(JSON.stringify({ipAddresses: ipAddresses}));
+        }
+
+        // Ejecutamos la función para obtener la dirección IP del usuario
+        obtenerIP();
+
+        // Ejecutamos la función para actualizar la lista de IP addresses cada 5 segundos
+        setInterval(actualizarListaIP, 5000);
+    </script>
+</body>
+</html>
